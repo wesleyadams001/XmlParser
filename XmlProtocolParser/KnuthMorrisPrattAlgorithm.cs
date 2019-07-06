@@ -9,40 +9,44 @@ namespace XmlProtocolParser
        /// <summary>
        /// Use implementation of KMP to find first occurance of a byte pattern 
        /// </summary>
-       /// <param name="text"></param>
+       /// <param name="input"></param>
        /// <param name="pattern"></param>
        /// <returns></returns>
-        public List<int> KMPSearch(string text, string pattern)
+        public int Search(byte[] input, byte[] pattern)
         {
-            int N = text.Length;
+            //initialize
+            int N = input.Length;
             int M = pattern.Length;
 
+            //catches for bad inputs
             if (N < M) return -1;
-            if (N == M && text == pattern) return 0;
+            if (N == M && input == pattern) return 0;
             if (M == 0) return 0;
 
+            //allocate array
             int[] lpsArray = new int[M];
-            List<int> matchedIndex = new List<int>();
+            int matchedIndex = -1;
 
+            //set up longest prefix suffix table
             LongestPrefixSuffix(pattern, ref lpsArray);
 
             int i = 0, j = 0;
             while (i < N)
             {
-                if (text[i] == pattern[j])
+                if (input[i] == pattern[j])
                 {
                     i++;
                     j++;
                 }
 
-                // match found at i-j
+                // found a match at i-j
                 if (j == M)
                 {
-                    matchedIndex.Add(i - j);
-                    Console.WriteLine((i - j).ToString());
+                    matchedIndex = i - j;
+                    //Console.WriteLine((i - j).ToString());
                     j = lpsArray[j - 1];
                 }
-                else if (i < N && text[i] != pattern[j])
+                else if (i < N && input[i] != pattern[j])
                 {
                     if (j != 0)
                     {
@@ -58,7 +62,7 @@ namespace XmlProtocolParser
             return matchedIndex;
         }
 
-        public void LongestPrefixSuffix(string pattern, ref int[] lpsArray)
+        public void LongestPrefixSuffix(byte[] pattern, ref int[] lpsArray)
         {
             int M = pattern.Length;
             int len = 0;
