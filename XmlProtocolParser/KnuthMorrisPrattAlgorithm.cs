@@ -4,7 +4,7 @@ using System.Text;
 
 namespace XmlProtocolParser
 {
-    class KnuthMorrisPrattAlgorithm
+    public class KnuthMorrisPrattAlgorithm
     {
        /// <summary>
        /// Use implementation of KMP to find first occurance of a byte pattern 
@@ -62,6 +62,11 @@ namespace XmlProtocolParser
             return matchedIndex;
         }
 
+        /// <summary>
+        /// Build out the longest prefix sufix table
+        /// </summary>
+        /// <param name="pattern"></param>
+        /// <param name="lpsArray"></param>
         public void LongestPrefixSuffix(byte[] pattern, ref int[] lpsArray)
         {
             int M = pattern.Length;
@@ -91,6 +96,8 @@ namespace XmlProtocolParser
                 }
             }
         }
+
+
         
     }
 }
